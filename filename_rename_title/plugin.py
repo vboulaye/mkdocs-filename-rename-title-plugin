@@ -8,21 +8,23 @@ from mkdocs.structure.pages import Page
 
 class FilenameRenameTitlePlugin(BasePlugin):
     def on_nav(self, nav: MkDocsNavigation, config: Config, files: Files):
-
-        if isinstance(nav, Section):
-            for item in nav.items:
-                self.process_item_title(item)
+        print(str(nav))
+        #if isinstance(nav, Section):
+        for item in nav.items:
+            self.process_item_title(item)
         return nav
 
     def process_item_title(self, nav: MkDocsNavigation):
-        if nav.title:
+        if isinstance(nav, Page):
+            if nav.title is None and 'title' not in nav.meta:
+                nav.title = self.format_title(nav.file.name)
+        if isinstance(nav, Section):
             print(nav.title)
             nav.title = self.format_title(nav.title)
             print(nav.title)
         if isinstance(nav, Section):
-            if nav.items:
-                for item in nav.items:
-                    self.process_item_title(item)
+            for item in nav.children:
+                self.process_item_title(item)
         return nav
 
     # def on_page_markdown(self, markdown, page, config, site_navigation=None, **kwargs):
@@ -42,7 +44,7 @@ class FilenameRenameTitlePlugin(BasePlugin):
     #     return markdown
 
     def format_title(self, title):
-        title = re.sub('^[0-9]{1,2}_', '', title).replace('-', ' ').replace('_', ' ')
+        title = re.sub('^[0-9]{1,2}[ _]', '', title).replace('-', ' ').replace('_', ' ')
         # Capitalize if the filename was all lowercase, otherwise leave it as-is.
         if title.lower() == title:
             title = title.capitalize()
