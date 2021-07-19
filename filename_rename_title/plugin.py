@@ -14,7 +14,9 @@ class FilenameRenameTitlePlugin(BasePlugin):
 
     def process_item_title(self, nav: MkDocsNavigation):
         if nav.title:
+            print(nav.title)
             nav.title = self.format_title(nav.title)
+            print(nav.title)
         if nav.items:
             for item in nav.items:
                 self.process_item_title(item)
