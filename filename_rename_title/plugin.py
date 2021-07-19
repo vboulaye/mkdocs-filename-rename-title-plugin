@@ -1,15 +1,17 @@
 from mkdocs.plugins import BasePlugin
-from mkdocs.structure.nav import Navigation as MkDocsNavigation
+from mkdocs.structure.nav import Navigation as MkDocsNavigation, Section
 import re
 from mkdocs.structure.files import Files, File
 from mkdocs.config import config_options, Config
+from mkdocs.structure.pages import Page
 
 
 class FilenameRenameTitlePlugin(BasePlugin):
     def on_nav(self, nav: MkDocsNavigation, config: Config, files: Files):
 
-        for item in nav.items:
-            self.process_item_title(item)
+        if isinstance(nav, Section):
+            for item in nav.items:
+                self.process_item_title(item)
         return nav
 
     def process_item_title(self, nav: MkDocsNavigation):
@@ -17,9 +19,10 @@ class FilenameRenameTitlePlugin(BasePlugin):
             print(nav.title)
             nav.title = self.format_title(nav.title)
             print(nav.title)
-        if nav.items:
-            for item in nav.items:
-                self.process_item_title(item)
+        if isinstance(nav, Section):
+            if nav.items:
+                for item in nav.items:
+                    self.process_item_title(item)
         return nav
 
     # def on_page_markdown(self, markdown, page, config, site_navigation=None, **kwargs):
