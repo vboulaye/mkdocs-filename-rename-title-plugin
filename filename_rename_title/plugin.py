@@ -1,7 +1,8 @@
 from mkdocs.plugins import BasePlugin
+import re
 
 
-class FilenameTitlePlugin(BasePlugin):
+class FilenameRenameTitlePlugin(BasePlugin):
     def on_page_markdown(self, markdown, page, config, site_navigation=None, **kwargs):
         """
         The page_markdown event is called after the page's markdown is loaded from
@@ -12,7 +13,7 @@ class FilenameTitlePlugin(BasePlugin):
             return markdown
         if page.is_homepage:
             return markdown
-        page.title = page.file.name.replace('-', ' ').replace('_', ' ')
+        page.title = re.sub('^[0-9]{1,2}_','',page.file.name).replace('-', ' ').replace('_', ' ')
         # Capitalize if the filename was all lowercase, otherwise leave it as-is.
         if page.title.lower() == page.title:
             page.title = page.title.capitalize()

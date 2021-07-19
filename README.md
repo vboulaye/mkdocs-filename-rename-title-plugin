@@ -1,4 +1,4 @@
-# Mkdocs plugin: `filename_title`
+# Mkdocs plugin: `filename_rename_title`
 
 This plugin for [mkdocs](https://www.mkdocs.org/) changes the page title (e.g. the title in the nav bar) into the filename.
 
@@ -45,7 +45,7 @@ Say in your `mkdocs.yml` configuration file:
 
 ```yaml
 plugins:
-  - filename_title
+  - filename_rename_title
   - ...
 ```
 
